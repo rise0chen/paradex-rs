@@ -13,7 +13,7 @@ async fn main() {
     info!("system_time {:?}", client.system_time().await);
     info!("system_state {:?}", client.system_state().await);
     info!("BBO {:?}", client.bbo(symbol).await);
-    info!("markets_static {:?}", client.markets().await);
+    info!("markets_static {:?}", client.markets(None).await);
 
     let private_key = std::env::var("PRIVATE_KEY").expect("PRIVATE_KEY not set");
     let client_private = Client::new(url, Some(private_key)).await.unwrap();

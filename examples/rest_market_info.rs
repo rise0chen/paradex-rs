@@ -11,7 +11,7 @@ async fn main() {
         .unwrap();
 
     // Get and print all available markets
-    let markets = client.markets().await.unwrap();
+    let markets = client.markets(None).await.unwrap();
     info!("Markets: {:#?}", markets);
     let markets_summary = client.markets_summary("USDC".to_string()).await.unwrap();
     info!("Markets Summary USDC: {:#?}", markets_summary);

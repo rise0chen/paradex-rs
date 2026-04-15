@@ -219,10 +219,14 @@ impl Client {
     /// # Errors
     ///
     /// If the markets cannot be retrieved
-    pub async fn markets(&self) -> Result<Vec<MarketStatic>> {
-        self.request(Method::Get::<()>(vec![]), "/v1/markets".into(), None)
-            .await
-            .map(|result_container: ResultsContainer<Vec<MarketStatic>>| result_container.results)
+    pub async fn markets(&self, market: Option<String>) -> Result<Vec<MarketStatic>> {
+        self.request(
+            Method::Get::<()>(vec![("market".to_string(), market.unwrap_or_default())]),
+            "/v1/markets".into(),
+            None,
+        )
+        .await
+        .map(|result_container: ResultsContainer<Vec<MarketStatic>>| result_container.results)
     }
 
     /// Get the list of markets summary on the exchange
