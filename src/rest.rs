@@ -49,6 +49,7 @@ pub struct Client {
     client: reqwest::Client,
     l2_chain_private_key_account: Option<(Felt, SigningKey, Felt)>,
     jwt: Arc<RwLock<(SystemTime, String)>>, // the current valid JWT and timestamp created
+    pub interactive: bool,
 }
 
 impl Client {
@@ -114,6 +115,7 @@ impl Client {
             client,
             l2_chain_private_key_account: None,
             jwt: Arc::new(RwLock::new((UNIX_EPOCH, "".to_string()))),
+            interactive: false,
         };
         if let Some(hex_str) = l2_private_key_hex_str {
             let signing_key = SigningKey::from_secret_scalar(
@@ -384,14 +386,15 @@ impl Client {
                 .l2_chain_private_key_account
                 .as_ref()
                 .ok_or(Error::MissingPrivateKey)?;
+            let path = if self.interactive {
+                "/v1/auth?token_usage=interactive"
+            } else {
+                "/v1/auth"
+            };
             let (timestamp, headers) = auth_headers(l2_chain, signing_key, account)?;
             trace!("Auth Headers {headers:?}");
             let token = self
-                .request::<&'static str, JWTToken>(
-                    Method::Post(""),
-                    "/v1/auth".into(),
-                    Some(headers),
-                )
+                .request::<&'static str, JWTToken>(Method::Post(""), path.into(), Some(headers))
                 .await
                 .map(|s| s.jwt_token)?;
             *lock = (timestamp, token);
