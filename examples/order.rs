@@ -102,6 +102,7 @@ async fn main() {
         size: Decimal::from_f64(0.005).unwrap(),
         order_type: OrderType::LIMIT,
         client_id: Some("A".into()),
+        dime_discount: None,
         flags: vec![],
         recv_window: None,
         stp: None,

@@ -22,6 +22,7 @@ pub fn order_benchmark(c: &mut Criterion) {
         size: Decimal::from_f64(0.001).unwrap(),
         order_type: OrderType::MARKET,
         client_id: Some("A".into()),
+        dime_discount: None,
         flags: vec![],
         recv_window: None,
         stp: None,

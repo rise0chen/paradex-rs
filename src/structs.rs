@@ -854,6 +854,8 @@ pub struct OrderRequest {
     pub order_type: OrderType,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub client_id: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub dime_discount: Option<bool>,
     pub flags: Vec<OrderFlags>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub recv_window: Option<u64>,
@@ -873,6 +875,7 @@ impl OrderRequest {
             size: self.size,
             order_type: self.order_type,
             client_id: self.client_id,
+            dime_discount: self.dime_discount,
             flags: self.flags,
             recv_window: self.recv_window,
             stp: self.stp,
@@ -912,6 +915,8 @@ pub struct Order {
     pub order_type: OrderType,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub client_id: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub dime_discount: Option<bool>,
     pub flags: Vec<OrderFlags>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub recv_window: Option<u64>,

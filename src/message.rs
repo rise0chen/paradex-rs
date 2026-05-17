@@ -428,6 +428,7 @@ mod tests {
             size: Decimal::from_f64(0.001).unwrap(),
             order_type: OrderType::LIMIT,
             client_id: Some("A".into()),
+            dime_discount: None,
             flags: vec![],
             recv_window: None,
             stp: None,
