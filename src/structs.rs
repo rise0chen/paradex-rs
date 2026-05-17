@@ -532,8 +532,12 @@ pub struct OrderBookResponse {
 pub struct OrderBookInteractiveResponse {
     /// List of Ask sizes and prices
     pub asks: Vec<(String, String)>,
+    /// Size on the best ask from API (excluding RPI)
+    pub best_ask_api: Option<(String, String)>,
+    /// List of Bid sizes and prices
+    pub bids: Vec<(String, String)>,
     /// Size on the best bid from API (excluding RPI)
-    pub best_bid_api: (String, String),
+    pub best_bid_api: Option<(String, String)>,
     /// Last update to the orderbook in milliseconds
     pub last_updated_at: u64,
     /// Market name
