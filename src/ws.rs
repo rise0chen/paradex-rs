@@ -164,11 +164,11 @@ impl WebsocketManager {
         method: &'static str,
         identifier: jsonrpsee_types::Id<'static>,
         object_params: ObjectParams,
-    ) -> jsonrpsee_types::RequestSer<'static> {
-        jsonrpsee_types::RequestSer::owned(
+    ) -> jsonrpsee_types::Request<'static> {
+        jsonrpsee_types::Request::owned(
+            method.into(),
+            object_params.to_rpc_params().unwrap(),
             identifier,
-            method,
-            object_params.to_rpc_params().ok().unwrap(),
         )
     }
 
@@ -176,7 +176,7 @@ impl WebsocketManager {
         method: &'static str,
         channel_name: String,
         identifier: Identifier,
-    ) -> jsonrpsee_types::RequestSer<'static> {
+    ) -> jsonrpsee_types::Request<'static> {
         let mut params = ObjectParams::new();
         params.insert("channel", channel_name).unwrap();
         Self::request(method, jsonrpsee_types::Id::Number(identifier.0), params)
@@ -278,7 +278,7 @@ impl WebsocketManager {
 
                         missed_pongs = 0;
                         connection = Self::_connect(url, &mut rest_client).await;
-                        let requests : Vec<jsonrpsee_types::RequestSer<'static>> = subscriptions_by_channel.iter()
+                        let requests : Vec<jsonrpsee_types::Request<'static>> = subscriptions_by_channel.iter()
                             .filter_map( |entry| if let Some( (_, identifier, _)) = entry.1.1.first() { Some(Self::request_channel("subscribe", entry.0.to_string(), *identifier))} else {None})
                             .collect();
                         for request in requests {

@@ -3,8 +3,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::error::{Error, Result};
 use crate::structs::{ModifyOrderRequest, OrderRequest};
-use cached::SizedCache;
-use cached::proc_macro::cached;
+use cached::cached;
 use reqwest::header::{HeaderMap, HeaderValue};
 use rust_decimal::Decimal;
 use rust_decimal::prelude::ToPrimitive;
@@ -97,10 +96,7 @@ pub fn account_address(
     ))
 }
 
-#[cached(
-    ty = "SizedCache<Felt, Result<Felt>>",
-    create = "{ SizedCache::with_size(100) }"
-)]
+#[cached(max_size = 100)]
 fn domain_hash(chain_id: Felt) -> Result<Felt> {
     //chainId should be after version according to SNIP-12. However paradex has the order swapped.
     let domain_name_hash =
@@ -459,6 +455,7 @@ mod tests {
                 size: Decimal::from_f64(0.001).unwrap(),
                 order_type: OrderType::LIMIT,
                 client_id: Some("A".into()),
+                dime_discount: None,
                 flags: vec![],
                 recv_window: None,
                 stp: None,
