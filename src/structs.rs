@@ -300,6 +300,7 @@ pub enum OptionType {
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AssetKind {
+    Spot,
     Perp,
     PerpOption,
 }
@@ -1296,6 +1297,18 @@ pub struct Balance {
         deserialize_with = "deserialize_string_to_f64"
     )]
     pub size: f64,
+    #[serde(
+        default,
+        serialize_with = "serialize_optional_f64_as_string",
+        deserialize_with = "deserialize_optional_string_to_f64"
+    )]
+    pub average_entry_price: Option<f64>,
+    #[serde(
+        default,
+        serialize_with = "serialize_optional_f64_as_string",
+        deserialize_with = "deserialize_optional_string_to_f64"
+    )]
+    pub cost: Option<f64>,
     pub last_updated_at: u64,
 }
 
